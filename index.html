@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>啟動 UX Toolkit Bridge</title>
+<title>啟動 UX Prototype Bridge</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -15,19 +15,19 @@
     background: #fff; border-radius: 14px; padding: 36px 32px; max-width: 440px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.08); text-align: center;
   }
-  .logo { font-size: 13px; letter-spacing: 2px; color: #0d7de8; font-weight: 700; }
+  .logo { font-size: 13px; letter-spacing: 2px; color: #7c3aed; font-weight: 700; }
   h1 { font-size: 20px; margin: 14px 0 10px; }
   p { font-size: 14px; line-height: 1.65; color: #555; }
   .btn {
     display: inline-block; margin-top: 22px; padding: 11px 28px;
-    background: #0d7de8; color: #fff; text-decoration: none;
+    background: #7c3aed; color: #fff; text-decoration: none;
     border-radius: 8px; font-size: 15px; font-weight: 600;
     transition: background .15s;
   }
-  .btn:hover { background: #0b6ecf; }
+  .btn:hover { background: #6d28d9; }
   .hint { margin-top: 18px; font-size: 12px; color: #999; }
   .spinner {
-    width: 18px; height: 18px; border: 2px solid #d9e8fb; border-top-color: #0d7de8;
+    width: 18px; height: 18px; border: 2px solid #e9d9fb; border-top-color: #7c3aed;
     border-radius: 50%; display: inline-block; vertical-align: middle;
     animation: spin .8s linear infinite; margin-right: 8px;
   }
@@ -36,17 +36,17 @@
 </head>
 <body>
   <div class="card">
-    <div class="logo">UX TOOLKIT</div>
+    <div class="logo">UX PROTOTYPE</div>
     <h1><span class="spinner"></span>正在啟動 Bridge…</h1>
-    <p>若瀏覽器詢問「是否開啟 UXToolkitLauncher？」，請按<strong>允許</strong>。<br/>
+    <p>若瀏覽器詢問「是否開啟 UXProtoLauncher？」，請按<strong>允許</strong>。<br/>
        沒有自動跳出時，請點下方按鈕。</p>
-    <a class="btn" href="uxtoolkit://start">手動啟動 Bridge</a>
+    <a class="btn" href="uxproto://start">手動啟動 Bridge</a>
     <p class="hint">連線成功後會自動關閉此分頁。</p>
   </div>
   <script>
-    // 喚起自訂 URL scheme（瀏覽器 → macOS → UXToolkitLauncher.app → 啟動插件.command）
-    var SCHEME = 'uxtoolkit://start';
-    var BRIDGE = 'ws://localhost:3334';
+    // 喚起自訂 URL scheme（瀏覽器 → macOS → UXProtoLauncher.app → 啟動插件.command）
+    var SCHEME = 'uxproto://start';
+    var BRIDGE = 'ws://localhost:3335';
     var h1 = document.querySelector('h1');
     var hint = document.querySelector('.hint');
     setTimeout(function () { window.location.href = SCHEME; }, 350);
