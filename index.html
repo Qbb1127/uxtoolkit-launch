@@ -41,13 +41,33 @@
     <p>若瀏覽器詢問「是否開啟 UXToolkitLauncher？」，請按<strong>允許</strong>。<br/>
        沒有自動跳出時，請點下方按鈕。</p>
     <a class="btn" href="uxtoolkit://start">手動啟動 Bridge</a>
-    <p class="hint">啟動成功後即可關閉此分頁，回到 Figma。</p>
+    <p class="hint">連線成功後會自動關閉此分頁。</p>
   </div>
   <script>
-    // 自動嘗試喚起自訂 URL scheme（瀏覽器 → macOS → UXToolkitLauncher.app → 啟動插件.command）
-    setTimeout(function () {
-      window.location.href = 'uxtoolkit://start';
-    }, 350);
+    // 喚起自訂 URL scheme（瀏覽器 → macOS → UXToolkitLauncher.app → 啟動插件.command）
+    var SCHEME = 'uxtoolkit://start';
+    var BRIDGE = 'ws://localhost:3334';
+    var h1 = document.querySelector('h1');
+    var hint = document.querySelector('.hint');
+    setTimeout(function () { window.location.href = SCHEME; }, 350);
+
+    // 持續探測本機 bridge，成功連線後自動關閉此分頁。
+    var tries = 0, done = false;
+    function closeTab() {
+      h1.innerHTML = '✓ 已連線 Bridge，正在關閉…';
+      try { window.open('', '_self'); window.close(); } catch (e) {}
+      setTimeout(function () { hint.textContent = '已連線，可關閉此分頁回到 Figma。'; }, 800);
+    }
+    function probe() {
+      if (done) return;
+      var ws;
+      try { ws = new WebSocket(BRIDGE); } catch (e) { return retry(); }
+      var t = setTimeout(function () { try { ws.close(); } catch (e) {} retry(); }, 1500);
+      ws.onopen = function () { done = true; clearTimeout(t); try { ws.close(); } catch (e) {} closeTab(); };
+      ws.onerror = function () { clearTimeout(t); try { ws.close(); } catch (e) {} retry(); };
+    }
+    function retry() { if (!done && tries++ < 90) setTimeout(probe, 700); }
+    probe();
   </script>
 </body>
 </html>
